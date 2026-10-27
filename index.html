@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hủ Tiếu Gõ Đêm Khuya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,500;0,700;0,900;1,600&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-red: #ff2a54;
+            --neon-yellow: #ffd60a;
+            --wood-dark: #3e2723;
+            --wood-mid: #5d4037;
+            --night-bg: #0f1420;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: var(--night-bg);
+            color: #fff;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+        }
+
+        .retro-font {
+            font-family: 'VT323', monospace;
+        }
+
+        /* Hiệu ứng biển hiệu Neon & Kính vẽ tay Hủ Tiếu Gõ */
+        .glass-painting-sign {
+            background: linear-gradient(180deg, #ffea00 0%, #ff9900 100%);
+            border: 4px solid #d32f2f;
+            box-shadow: 0 0 18px rgba(255, 214, 10, 0.55), inset 0 0 12px rgba(211, 47, 47, 0.8);
+            text-shadow: 2px 2px 0px #b71c1c, -1px -1px 0px #fff;
+        }
+
+        /* Hiệu ứng khói bốc lên từ nồi nước lèo */
+        @keyframes steamRise {
+            0% { transform: translateY(0) scaleX(1); opacity: 0.7; }
+            50% { transform: translateY(-14px) scaleX(1.25); opacity: 0.4; }
+            100% { transform: translateY(-28px) scaleX(0.9); opacity: 0; }
+        }
+        .steam-puffs span {
+            display: inline-block;
+            animation: steamRise 2.4s infinite ease-out;
+        }
+        .steam-puffs span:nth-child(2) { animation-delay: 0.8s; }
+        .steam-puffs span:nth-child(3) { animation-delay: 1.5s; }
+
+        /* Hiệu ứng nước sôi */
+        @keyframes bubbleUp {
+            0% { transform: translateY(5px) scale(0.7); opacity: 0.3; }
+            50% { transform: translateY(0px) scale(1.1); opacity: 0.9; }
+            100% { transform: translateY(-5px) scale(0.8); opacity: 0.1; }
+        }
+        .boil-bubble {
+            animation: bubbleUp 0.9s infinite ease-in-out;
+        }
+
+        /* Hiệu ứng rung khi gõ cốc cốc */
+        @keyframes clackShake {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(-12deg) scale(1.12); }
+            50% { transform: rotate(10deg) scale(1.15); }
+            75% { transform: rotate(-6deg) scale(1.06); }
+        }
+        .clack-anim {
+            animation: clackShake 0.25s ease-in-out;
+        }
+
+        /* Hiệu ứng viền sáng vàng gợi ý nguyên liệu khách đang cần */
+        @keyframes needGlow {
+            0%, 100% { box-shadow: 0 0 0px rgba(250, 204, 21, 0.4), inset 0 0 6px rgba(250, 204, 21, 0.3); border-color: #facc15; }
+            50% { box-shadow: 0 0 14px rgba(250, 204, 21, 0.95), inset 0 0 10px rgba(250, 204, 21, 0.5); border-color: #fef08a; }
+        }
+        .highlight-needed {
+            animation: needGlow 1.3s infinite ease-in-out;
+        }
+
+        /* Nút bấm kiểu arcade đường phố */
+        .street-btn {
+            transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+        }
+        .street-btn:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+        }
+
+        /* Thanh cuộn gọn gàng */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 9999px; }
+
+        /* Hiệu ứng bay chữ điểm thưởng */
+        @keyframes floatUpFade {
+            0% { transform: translateY(0) scale(0.95); opacity: 1; }
+            100% { transform: translateY(-45px) scale(1.08); opacity: 0; }
+        }
+        .floating-toast {
+            animation: floatUpFade 1.4s forwards ease-out;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-gradient-to-b from-[#0b0f19] via-[#151c2e] to-[#232030]">
+
+    <!-- HEADER: BẢNG HIỆU XE HỦ TIẾU, CHỌN ĐỘ KHÓ & THÔNG SỐ -->
+    <header class="w-full max-w-7xl mx-auto px-3 pt-2 pb-1">
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-[#231915] border-4 border-[#5d4037] rounded-2xl p-2.5 shadow-2xl relative overflow-hidden">
+            
+            <!-- Đèn dây trang trí -->
+            <div class="absolute top-0 left-0 right-0 flex justify-around pointer-events-none opacity-80">
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-300 shadow-[0_0_8px_#fde047]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-red-400 shadow-[0_0_8px_#f87171]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-green-400 shadow-[0_0_8px_#4ade80]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-300 shadow-[0_0_8px_#fde047]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-red-400 shadow-[0_0_8px_#f87171]"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-300 shadow-[0_0_8px_#fcd34d]"></span>
+            </div>
+
+            <!-- Biển kính vẽ tay cổ điển -->
+            <div class="glass-painting-sign px-3.5 py-1.5 rounded-xl flex items-center gap-2.5">
+                <span class="text-2xl sm:text-3xl">🍜</span>
+                <div>
+                    <h1 class="font-black text-base sm:text-xl tracking-wider text-red-700 uppercase leading-none">MÌ - HỦ TIẾU GÕ</h1>
+                    <p class="text-[11px] font-bold text-red-900 tracking-widest uppercase">Bình Dân • Đêm Khuya • Dễ Chơi</p>
+                </div>
+            </div>
+
+            <!-- Thông số tiền, uy tín, đồng hồ đêm & nút đổi Độ Khó nhanh -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Chế độ Độ khó hiện tại (Bấm để đổi bất cứ lúc nào) -->
+                <button onclick="openDifficultyModal()" class="street-btn bg-indigo-950 hover:bg-indigo-900 border-2 border-indigo-400 rounded-xl px-3 py-1 flex items-center gap-2 text-left" title="Bấm để đổi Chế độ Dễ / Trung Bình / Khó">
+                    <span id="diffBadgeIcon" class="text-xl">🌱</span>
+                    <div>
+                        <div class="text-[10px] text-indigo-300 uppercase font-bold">Chế Độ (Đổi)</div>
+                        <div id="diffBadgeText" class="text-xs sm:text-sm font-black text-emerald-300">DỄ • 05:00/tô</div>
+                    </div>
+                </button>
+
+                <!-- Doanh thu -->
+                <div class="bg-slate-900/90 border-2 border-amber-500/70 rounded-xl px-3 py-1 flex items-center gap-2">
+                    <span class="text-xl">💵</span>
+                    <div>
+                        <div class="text-[10px] text-amber-300/80 uppercase font-bold">Tiền Trong Túi</div>
+                        <div id="moneyDisplay" class="text-sm sm:text-base font-black text-emerald-400">30.000đ</div>
+                    </div>
+                </div>
+
+                <!-- Uy tín & Combo -->
+                <div class="bg-slate-900/90 border-2 border-rose-500/70 rounded-xl px-3 py-1 flex items-center gap-2">
+                    <span class="text-xl">⭐</span>
+                    <div>
+                        <div class="text-[10px] text-rose-300/80 uppercase font-bold">Uy Tín / Combo</div>
+                        <div class="text-sm sm:text-base font-black text-yellow-300">
+                            <span id="repDisplay">100%</span> <span id="comboBadge" class="text-xs bg-rose-600 text-white px-1.5 py-0.5 rounded-md ml-1">x1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thời gian ca đêm -->
+                <div class="bg-slate-900/90 border-2 border-cyan-500/70 rounded-xl px-3 py-1 flex items-center gap-2">
+                    <span class="text-xl">🌙</span>
+                    <div>
+                        <div class="text-[10px] text-cyan-300/80 uppercase font-bold">Đêm Thứ <span id="dayNum">1</span></div>
+                        <div id="clockDisplay" class="text-sm sm:text-base font-black text-cyan-300">21:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cụm nút chức năng: Gõ Thanh Tre & Nâng Cấp & Âm thanh -->
+            <div class="flex items-center gap-2">
+                <button id="bambooClackBtn" onclick="clackBamboo()" class="street-btn bg-gradient-to-b from-amber-400 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black px-3.5 py-2 rounded-xl border-2 border-amber-200 flex items-center gap-1.5 text-xs sm:text-sm relative" title="Gọi khách mới và cộng thêm 30 giây chờ cho tất cả khách!">
+                    <span class="text-lg">🥢</span>
+                    <div class="text-left leading-tight">
+                        <div>Gõ Cốc Cốc!</div>
+                        <div class="text-[10px] font-bold text-amber-950">+30s chờ & Gọi khách</div>
+                    </div>
+                    <span id="clackCooldownBar" class="absolute bottom-0 left-0 h-1 bg-red-600 rounded-b-xl transition-all duration-100" style="width: 0%;"></span>
+                </button>
+
+                <button onclick="toggleUpgradeModal(true)" class="street-btn bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-2 rounded-xl border-2 border-emerald-300 text-xs sm:text-sm flex items-center gap-1.5">
+                    <span class="text-base">🛒</span>
+                    <span>Nâng Cấp Xe</span>
+                </button>
+
+                <button id="soundToggleBtn" onclick="toggleSound()" class="street-btn bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold p-2.5 rounded-xl border-2 border-slate-600 text-sm" title="Bật/Tắt Âm Thanh">
+                    🔊
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE: KHU VỰC KHÁCH ĐỢI + BÀN CHẾ BIẾN THÔNG MINH -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-3 py-1.5 flex flex-col gap-3 justify-between">
+        
+        <!-- KHU VỰC 1: 3 GHẾ KHÁCH NGỒI VỚI ĐỒNG HỒ PHÚT:GIÂY RÕ RÀNG -->
+        <section class="relative bg-gradient-to-b from-[#161e31] via-[#1c2539] to-[#252b3b] border-2 border-slate-700/90 rounded-2xl p-3 shadow-inner">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-300 mb-2 border-b border-slate-700/70 pb-1.5">
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="font-bold text-amber-300">👆 BẤM CHỌN 1 KHÁCH BÊN DƯỚI:</span>
+                    <span class="text-slate-200">Các khay nguyên liệu ở dưới sẽ <b class="text-yellow-300 underline">tự động phát sáng</b> theo đúng tô của khách đó!</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="shiftRuleNote" class="bg-slate-800 text-emerald-300 px-2.5 py-0.5 rounded-full font-bold border border-emerald-500/40">
+                        🌱 Chế độ Dễ: 05:00 phút mỗi tô • Không phạt khi đổ tô
+                    </span>
+                </div>
+            </div>
+
+            <!-- Danh sách 3 ghế nhựa đỏ cho khách ngồi đợi -->
+            <div id="customerSlotsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-3 min-h-[168px]">
+                <!-- Render động bằng JavaScript -->
+            </div>
+        </section>
+
+        <!-- KHU VỰC 2: BÀN CHẾ BIẾN 3 BƯỚC SIÊU TRỰC QUAN -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch">
+            
+            <!-- CỘT TRÁI (4/12): BƯỚC 1 (TRỤNG BÁNH CÓ TỰ VỚT) & BƯỚC 2 (NƯỚC / KHÔ CÓ ĐÈN GỢI Ý) -->
+            <div class="lg:col-span-4 bg-[#2c1d18] border-4 border-[#5d4037] rounded-2xl p-3.5 flex flex-col justify-between shadow-xl">
+                <div class="space-y-3">
+                    <!-- BƯỚC 1: NỒI NƯỚC LÈO TRỤNG BÁNH -->
+                    <div class="bg-[#1b120f] border-2 border-[#4e342e] rounded-xl p-3 relative">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-amber-400 text-slate-950 font-black text-xs px-2.5 py-1 rounded-lg uppercase">
+                                Bước 1: Trụng Bánh Hủ Tiếu
+                            </span>
+                            <!-- Công tắc Tự động vớt bánh cho người chơi thích thong thả -->
+                            <label class="flex items-center gap-1.5 cursor-pointer bg-slate-900/90 border border-emerald-500/60 px-2 py-1 rounded-lg text-[11px] font-bold text-emerald-300">
+                                <input type="checkbox" id="autoBlanchToggle" onchange="toggleAutoBlanch(this.checked)" checked class="accent-emerald-400 w-3.5 h-3.5 rounded cursor-pointer">
+                                <span>Tự vớt khi chín</span>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <!-- Nồi nước lèo SVG -->
+                            <div class="relative flex flex-col items-center shrink-0">
+                                <div class="steam-puffs text-base text-slate-200/80 h-5 flex gap-1">
+                                    <span>♨️</span><span>💨</span><span>♨️</span>
+                                </div>
+                                <svg class="w-16 h-14" viewBox="0 0 120 90">
+                                    <ellipse cx="60" cy="24" rx="44" ry="11" fill="#94a3b8" stroke="#475569" stroke-width="3"/>
+                                    <ellipse cx="60" cy="24" rx="39" ry="8" fill="#fbbf24"/>
+                                    <circle class="boil-bubble" cx="45" cy="24" r="3.5" fill="#fef08a"/>
+                                    <circle class="boil-bubble" cx="68" cy="22" r="4" fill="#fef08a"/>
+                                    <path d="M16 24 L22 75 C24 84 96 84 98 75 L104 24 Z" fill="#cbd5e1" stroke="#475569" stroke-width="3"/>
+                                    <path d="M35 84 Q45 72 52 84 Q60 70 68 84 Q77 73 85 84 Z" fill="#f97316"/>
+                                </svg>
+                            </div>
+
+                            <!-- Thanh canh lửa to rõ -->
+                            <div class="flex-1">
+                                <div class="text-xs font-bold text-amber-200 mb-1 flex justify-between">
+                                    <span>Độ chín sợi bánh:</span>
+                                    <span id="blanchStatusText" class="text-amber-400 font-black">Chưa nhúng vợt</span>
+                                </div>
+                                
+                                <!-- Thanh Timing Gauge cực to -->
+                                <div class="w-full h-6 bg-slate-900 rounded-xl border-2 border-slate-600 relative overflow-hidden mb-2">
+                                    <!-- Vùng xanh hoàn hảo được cập nhật kích thước theo độ khó -->
+                                    <div id="perfectZoneIndicator" class="absolute top-0 bottom-0 left-[45%] w-[42%] bg-emerald-500/50 border-x-2 border-emerald-300 flex items-center justify-center text-[10px] font-black text-white uppercase tracking-wider">
+                                        VÙNG CHÍN NGON
+                                    </div>
+                                    <div id="blanchProgressFill" class="h-full bg-gradient-to-r from-amber-400 via-emerald-400 to-rose-500 transition-none" style="width: 0%;"></div>
+                                </div>
+
+                                <button id="blanchActionBtn" onclick="handleBlanchButton()" class="street-btn w-full bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-slate-950 font-black py-2.5 px-3 rounded-xl border-2 border-white text-xs sm:text-sm flex items-center justify-center gap-2">
+                                    <span class="text-lg">🍜</span>
+                                    <span id="blanchBtnLabel">BẤM ĐỂ TRỤNG BÁNH HỦ TIẾU</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BƯỚC 2: CHỌN HỦ TIẾU NƯỚC HAY HỦ TIẾU KHÔ -->
+                    <div class="bg-[#1b120f] border-2 border-[#4e342e] rounded-xl p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="bg-sky-400 text-slate-950 font-black text-xs px-2.5 py-1 rounded-lg uppercase">
+                                Bước 2: Chọn Nước Lèo hoặc Trộn Khô
+                            </span>
+                            <span id="step2HintText" class="text-xs font-bold text-yellow-300"></span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <button onclick="selectBrothType('nuoc')" id="btnTypeNuoc" class="street-btn bg-sky-800 hover:bg-sky-700 text-white font-bold py-3 px-2 rounded-xl border-2 border-sky-500 flex flex-col items-center gap-1 text-xs relative">
+                                <span id="badgeNeedNuoc" class="hidden absolute -top-2.5 right-2 bg-yellow-400 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow">★ KHÁCH CẦN</span>
+                                <span class="text-2xl">🥄</span>
+                                <span class="text-sm font-black">Chan Nước Lèo</span>
+                                <span class="text-[11px] text-sky-200">(Hủ tiếu Nước)</span>
+                            </button>
+
+                            <button onclick="selectBrothType('kho')" id="btnTypeKho" class="street-btn bg-amber-900 hover:bg-amber-800 text-white font-bold py-3 px-2 rounded-xl border-2 border-amber-600 flex flex-col items-center gap-1 text-xs relative">
+                                <span id="badgeNeedKho" class="hidden absolute -top-2.5 right-2 bg-yellow-400 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow">★ KHÁCH CẦN</span>
+                                <span class="text-2xl">🫗</span>
+                                <span class="text-sm font-black">Trộn Sốt Khô</span>
+                                <span class="text-[11px] text-amber-200">(Hủ tiếu Khô)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Thông tin cấp độ xe -->
+                <div class="mt-2 bg-black/35 rounded-xl px-3 py-2 border border-amber-900/50 flex items-center justify-between text-xs">
+                    <span class="text-amber-300 font-bold">🔥 Nồi Nước Lèo Cấp <span id="potLevelBadge">1</span></span>
+                    <span id="basePriceLabel" class="text-emerald-400 font-black">25.000đ / tô</span>
+                </div>
+            </div>
+
+            <!-- CỘT GIỮA (4/12): BẢNG ĐỐI CHIẾU CÔNG THỨC TRỰC TIẾP + TÔ ĐANG LÀM + NÚT BƯNG RA -->
+            <div class="lg:col-span-4 bg-[#261c18] border-4 border-[#6d4c41] rounded-2xl p-3.5 flex flex-col justify-between shadow-xl relative">
+                
+                <!-- Bảng Đối Chiếu Công Thức của Khách đang chọn -->
+                <div class="bg-slate-900/95 border-2 border-amber-400/80 rounded-xl p-2.5 mb-2">
+                    <div class="flex items-center justify-between border-b border-slate-700 pb-1 mb-1.5">
+                        <span class="text-xs font-black text-amber-300 uppercase flex items-center gap-1">
+                            <span>📋</span> <span id="recipeTargetName">Đơn Của Khách Ghế #1</span>
+                        </span>
+                        <span id="recipeMatchStatus" class="text-[11px] font-black px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+                            Đang chuẩn bị...
+                        </span>
+                    </div>
+                    <!-- Danh sách kiểm tra từng món (Có dấu tích xanh khi đã làm đúng) -->
+                    <div id="liveRecipeChecklist" class="flex flex-wrap gap-1.5 text-xs min-h-[32px] items-center">
+                        <span class="text-slate-400 italic">Đang chờ khách gọi món...</span>
+                    </div>
+                </div>
+
+                <!-- Hình ảnh Tô Hủ Tiếu Gõ (Vẽ SVG động) -->
+                <div class="my-1 flex flex-col items-center justify-center relative">
+                    <div id="floatingFeedbackContainer" class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"></div>
+                    
+                    <div class="relative w-44 h-44 sm:w-48 sm:h-48 flex items-center justify-center">
+                        <svg id="bowlSvg" viewBox="0 0 220 220" class="w-full h-full drop-shadow-[0_10px_15px_rgba(0,0,0,0.65)]">
+                            <!-- Đế tô & Viền tô sứ -->
+                            <circle cx="110" cy="110" r="98" fill="#f8fafc" stroke="#cbd5e1" stroke-width="6"/>
+                            <circle cx="110" cy="110" r="88" fill="#f1f5f9" stroke="#dc2626" stroke-width="2" stroke-dasharray="10 5"/>
+                            <circle cx="110" cy="110" r="78" fill="#e2e8f0"/>
+
+                            <!-- Lớp Nước Lèo hoặc Sốt Khô -->
+                            <circle id="svgBrothLayer" cx="110" cy="110" r="75" fill="transparent" class="transition-all duration-300"/>
+
+                            <!-- Lớp Bánh Hủ Tiếu & Giá Hẹ -->
+                            <g id="svgNoodleLayer" class="opacity-0 transition-opacity duration-300">
+                                <path d="M65 95 Q95 70 135 90" stroke="#86efac" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <path d="M75 135 Q115 150 148 120" stroke="#4ade80" stroke-width="4" fill="none" stroke-linecap="round"/>
+                                <path d="M62 105 C80 75, 130 75, 155 105 C130 135, 85 135, 62 105 Z" fill="#fffbeb" opacity="0.9"/>
+                                <path d="M68 96 Q110 65 150 98" stroke="#fef3c7" stroke-width="5" fill="none" stroke-linecap="round"/>
+                                <path d="M64 110 Q110 85 156 112" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round"/>
+                                <path d="M70 124 Q110 100 148 125" stroke="#fef3c7" stroke-width="5" fill="none" stroke-linecap="round"/>
+                                <path d="M78 136 Q112 118 142 135" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Lớp các loại Topping được vẽ động -->
+                            <g id="svgToppingsLayer"></g>
+
+                            <!-- Đôi đũa tre -->
+                            <line x1="25" y1="35" x2="105" y2="18" stroke="#d97706" stroke-width="5" stroke-linecap="round"/>
+                            <line x1="25" y1="44" x2="105" y2="24" stroke="#b45309" stroke-width="5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
+                    <!-- Tóm tắt các món hiện có trong tô -->
+                    <div id="currentBowlSummary" class="w-full bg-black/45 border border-amber-900/60 rounded-xl p-2 text-center min-h-[38px] flex flex-wrap items-center justify-center gap-1 text-xs text-amber-100">
+                        <span class="text-slate-400 italic">Bấm "Trụng Bánh" ở Bước 1 để bắt đầu làm tô mới!</span>
+                    </div>
+                </div>
+
+                <!-- BƯỚC 4: PHỤC VỤ KHÁCH ĐANG CHỌN HOẶC LÀM LẠI -->
+                <div class="grid grid-cols-4 gap-2 mt-1">
+                    <button onclick="trashBowl()" class="street-btn col-span-1 bg-slate-700 hover:bg-rose-700 text-slate-200 font-bold py-3 px-2 rounded-xl border-2 border-slate-500 text-xs flex flex-col items-center justify-center" title="Đổ tô làm lại từ đầu">
+                        <span class="text-lg">🔄</span>
+                        <span>Làm Lại</span>
+                    </button>
+
+                    <button onclick="serveSelectedCustomer()" id="serveBtn" class="street-btn col-span-3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500 text-slate-950 font-black py-3 px-4 rounded-xl border-2 border-white text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-lg">
+                        <span class="text-2xl">🍜</span>
+                        <div class="text-left leading-tight">
+                            <div class="text-base font-black uppercase">BƯNG RA PHỤC VỤ!</div>
+                            <div id="selectedTargetLabel" class="text-xs font-bold text-emerald-950">Giao cho Khách ghế #1</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI (4/12): BƯỚC 3 - KHAY 7 LOẠI TOPPING CÓ ĐÈN GỢI Ý "CẦN CHỌN" -->
+            <div class="lg:col-span-4 bg-[#2c1d18] border-4 border-[#5d4037] rounded-2xl p-3.5 flex flex-col justify-between shadow-xl">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-amber-400 text-slate-950 font-black text-xs px-2.5 py-1 rounded-lg uppercase">
+                            Bước 3: Chọn Topping Bỏ Vào Tô
+                        </span>
+                        <span class="text-[11px] text-yellow-300 font-bold">★ Khay sáng vàng = Khách cần</span>
+                    </div>
+
+                    <p class="text-xs text-slate-300 mb-2.5">
+                        Chỉ cần bấm vào các khay có nhãn <span class="bg-yellow-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px]">★ CẦN CHỌN</span>. Nếu lỡ bấm nhầm, bấm lại lần nữa để gỡ ra!
+                    </p>
+
+                    <!-- Lưới 7 khay nguyên liệu to, dễ bấm -->
+                    <div id="toppingGrid" class="grid grid-cols-2 gap-2">
+                        <!-- Render động bằng JS -->
+                    </div>
+                </div>
+
+                <!-- Chú giải màu sắc hỗ trợ người chơi mới -->
+                <div class="mt-3 bg-[#1b120f] border border-amber-800/60 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded bg-yellow-400 inline-block"></span>
+                        <span class="text-amber-200">Viền vàng: <b>Khách đang gọi</b></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span>
+                        <span class="text-emerald-300">Nền xanh: <b>Đã bỏ vào tô</b></span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- MODAL CHỌN CHẾ ĐỘ ĐỘ KHÓ (DỄ 5 PHÚT / TRUNG BÌNH 2 PHÚT / KHÓ 45 GIÂY) -->
+    <div id="difficultyModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-[#231712] border-4 border-amber-400 rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl text-white">
+            <div class="text-center mb-5">
+                <div class="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/50 px-4 py-1 rounded-full text-amber-300 text-xs font-bold mb-2">
+                    🌙 QUÁN HỦ TIẾU GÕ SÀI GÒN ĐÊM KHUYA
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-amber-300 uppercase">Chọn Chế Độ Chơi Của Bạn</h2>
+                <p class="text-xs sm:text-sm text-slate-300 mt-1">
+                    Bạn có thể đổi lại độ khó bất cứ lúc nào ở góc trên màn hình!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-5">
+                <!-- CHẾ ĐỘ DỄ: 5 PHÚT / TÔ -->
+                <div onclick="selectDifficulty('easy')" class="cursor-pointer group bg-gradient-to-b from-emerald-950 to-slate-900 hover:from-emerald-900 hover:to-slate-800 border-3 border-emerald-400 rounded-2xl p-4 flex flex-col justify-between transition transform hover:-translate-y-1 shadow-lg">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-3xl">🌱</span>
+                            <span class="bg-emerald-400 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full">KHUYÊN DÙNG</span>
+                        </div>
+                        <h3 class="text-lg font-black text-emerald-300 uppercase">Chế Độ DỄ</h3>
+                        <p class="text-xs text-emerald-100 font-semibold mb-3">Thư Giãn Đêm Khuya</p>
+                        <ul class="text-xs text-slate-200 space-y-1.5">
+                            <li>⏳ <b>Thời gian chờ: 5 Phút (300s)</b> cho mỗi tô, thoải mái nhìn công thức.</li>
+                            <li>🍜 <b>Tự động vớt bánh</b> khi chín tới & vùng xanh cực rộng.</li>
+                            <li>💡 Có <b>đèn vàng gợi ý</b> từng món khách cần chọn.</li>
+                            <li>🔄 Đổ tô làm lại <b>không bị phạt</b>.</li>
+                        </ul>
+                    </div>
+                    <button class="street-btn mt-4 w-full bg-emerald-400 group-hover:bg-emerald-300 text-slate-950 font-black py-2.5 rounded-xl text-sm">
+                        Chọn Chế Độ Dễ (5 Phút)
+                    </button>
+                </div>
+
+                <!-- CHẾ ĐỘ TRUNG BÌNH: 2 PHÚT / TÔ -->
+                <div onclick="selectDifficulty('medium')" class="cursor-pointer group bg-gradient-to-b from-amber-950 to-slate-900 hover:from-amber-900 hover:to-slate-800 border-2 border-amber-400/80 rounded-2xl p-4 flex flex-col justify-between transition transform hover:-translate-y-1 shadow-lg">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-3xl">🏮</span>
+                            <span class="bg-amber-400 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full">CÂN BẰNG</span>
+                        </div>
+                        <h3 class="text-lg font-black text-amber-300 uppercase">TRUNG BÌNH</h3>
+                        <p class="text-xs text-amber-100 font-semibold mb-3">Quán Đông Vừa Phải</p>
+                        <ul class="text-xs text-slate-200 space-y-1.5">
+                            <li>⏳ <b>Thời gian chờ: 2 Phút (120s)</b> mỗi khách.</li>
+                            <li>🍜 Tốc độ trụng bánh vừa phải, khách ghé đều đặn.</li>
+                            <li>💡 Vẫn hỗ trợ đầy đủ <b>đèn báo gợi ý nguyên liệu</b>.</li>
+                            <li>💵 Tiền bo thưởng x1.25.</li>
+                        </ul>
+                    </div>
+                    <button class="street-btn mt-4 w-full bg-amber-400 group-hover:bg-amber-300 text-slate-950 font-black py-2.5 rounded-xl text-sm">
+                        Chọn Trung Bình (2 Phút)
+                    </button>
+                </div>
+
+                <!-- CHẾ ĐỘ KHÓ: 45 GIÂY / TÔ -->
+                <div onclick="selectDifficulty('hard')" class="cursor-pointer group bg-gradient-to-b from-rose-950 to-slate-900 hover:from-rose-900 hover:to-slate-800 border-2 border-rose-500/80 rounded-2xl p-4 flex flex-col justify-between transition transform hover:-translate-y-1 shadow-lg">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-3xl">🔥</span>
+                            <span class="bg-rose-500 text-white font-black text-xs px-2.5 py-0.5 rounded-full">THỬ THÁCH</span>
+                        </div>
+                        <h3 class="text-lg font-black text-rose-300 uppercase">Chế Độ KHÓ</h3>
+                        <p class="text-xs text-rose-100 font-semibold mb-3">Giờ Cao Điểm Đêm Khuya</p>
+                        <ul class="text-xs text-slate-200 space-y-1.5">
+                            <li>⏳ <b>Thời gian chờ: 45 Giây</b> mỗi tô.</li>
+                            <li>🍜 Khách gọi nhiều topping phức tạp, lửa bếp nhanh.</li>
+                            <li>🥢 Phải thường xuyên gõ thanh tre giữ chân khách.</li>
+                            <li>💰 <b>Doanh thu & Tiền bo x1.5!</b></li>
+                        </ul>
+                    </div>
+                    <button class="street-btn mt-4 w-full bg-rose-500 group-hover:bg-rose-400 text-white font-black py-2.5 rounded-xl text-sm">
+                        Chọn Chế Độ Khó (45s)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CỬA HÀNG NÂNG CẤP XE HỦ TIẾU -->
+    <div id="upgradeModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#241814] border-4 border-amber-500 rounded-3xl max-w-lg w-full p-5 shadow-2xl text-white relative">
+            <div class="flex items-center justify-between border-b border-amber-800 pb-3 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <span class="text-3xl">🛠️</span>
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-black text-amber-400 uppercase">Tân Trang Xe Hủ Tiếu Gõ</h2>
+                        <p class="text-xs text-amber-200/80">Nâng cấp đồ nghề giúp nấu nhanh, tăng thời gian chờ & lời nhiều hơn!</p>
+                    </div>
+                </div>
+                <button onclick="toggleUpgradeModal(false)" class="bg-rose-600 hover:bg-rose-500 text-white font-black w-8 h-8 rounded-full">✕</button>
+            </div>
+
+            <div class="mb-3 bg-slate-900/90 border border-amber-500/50 rounded-xl p-2.5 flex justify-between items-center">
+                <span class="text-xs font-bold text-amber-200">Số dư hiện tại của bạn:</span>
+                <span id="modalMoneyDisplay" class="text-lg font-black text-emerald-400">0đ</span>
+            </div>
+
+            <div id="upgradeItemsList" class="space-y-2.5 max-h-[55vh] overflow-y-auto pr-1">
+                <!-- Render bằng JS -->
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-amber-800 flex justify-end">
+                <button onclick="toggleUpgradeModal(false)" class="street-btn bg-amber-500 hover:bg-amber-400 text-slate-950 font-black px-5 py-2 rounded-xl text-sm">
+                    Đóng & Tiếp Tục Bán Hàng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TỔNG KẾT CA ĐÊM -->
+    <div id="shiftSummaryModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden items-center justify-center p-4">
+        <div class="bg-[#231712] border-4 border-amber-400 rounded-3xl max-w-md w-full p-6 text-center shadow-2xl">
+            <div class="text-5xl mb-2">🌅</div>
+            <h2 class="text-2xl font-black text-amber-300 uppercase">Hết Ca Đêm Thứ <span id="summaryDayNum">1</span>!</h2>
+            <p class="text-xs text-amber-100/80 mb-4">Trời gần sáng, phố phường bắt đầu thưa khách...</p>
+
+            <div class="bg-black/45 border border-amber-700/60 rounded-2xl p-4 space-y-2 text-sm mb-5">
+                <div class="flex justify-between">
+                    <span class="text-slate-300">Số tô đã bán:</span>
+                    <span id="summaryBowlsSold" class="font-black text-amber-300">0 tô</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-300">Khách bỏ về:</span>
+                    <span id="summaryCustomersLost" class="font-black text-rose-400">0 người</span>
+                </div>
+                <div class="flex justify-between border-t border-slate-700 pt-2">
+                    <span class="text-amber-200 font-bold">Tổng tiền trong túi:</span>
+                    <span id="summaryTotalMoney" class="font-black text-emerald-400 text-base">0đ</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="openShopFromSummary()" class="street-btn flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl border-2 border-emerald-300 text-sm">
+                    🛒 Nâng Cấp Xe
+                </button>
+                <button onclick="startNextNightShift()" class="street-btn flex-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black py-3 rounded-xl border-2 border-amber-100 text-sm">
+                    🌙 Mở Bán Đêm Mới
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**************************************************************
+         * 1. HỆ THỐNG ÂM THANH SYNTHESIZED (WEB AUDIO API)
+         **************************************************************/
+        let audioCtx = null;
+        let soundEnabled = true;
+
+        function ensureAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundToggleBtn').textContent = soundEnabled ? '🔊' : '🔇';
+            if (soundEnabled) playBambooClackSound();
+        }
+
+        function playBambooClackSound() {
+            if (!soundEnabled) return;
+            ensureAudio();
+            const now = audioCtx.currentTime;
+            [0, 0.14].forEach((offset, idx) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                const baseFreq = idx === 0 ? 780 : 860;
+                osc.frequency.setValueAtTime(baseFreq, now + offset);
+                osc.frequency.exponentialRampToValueAtTime(290, now + offset + 0.085);
+
+                gain.gain.setValueAtTime(0.55, now + offset);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.09);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + offset);
+                osc.stop(now + offset + 0.095);
+            });
+        }
+
+        function playSizzleSound() {
+            if (!soundEnabled) return;
+            ensureAudio();
+            const now = audioCtx.currentTime;
+            const bufferSize = audioCtx.sampleRate * 0.25;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.12));
+            }
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 1400;
+
+            const gain = audioCtx.createGain();
+            gain.gain.value = 0.28;
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start(now);
+        }
+
+        function playPopSound(pitch = 520) {
+            if (!soundEnabled) return;
+            ensureAudio();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(pitch, now);
+            osc.frequency.exponentialRampToValueAtTime(pitch * 1.45, now + 0.08);
+            gain.gain.setValueAtTime(0.25, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.095);
+        }
+
+        function playCoinSound() {
+            if (!soundEnabled) return;
+            ensureAudio();
+            const now = audioCtx.currentTime;
+            [987.77, 1318.51].forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now + i * 0.09);
+                gain.gain.setValueAtTime(0.3, now + i * 0.09);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.09 + 0.28);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + i * 0.09);
+                osc.stop(now + i * 0.09 + 0.3);
+            });
+        }
+
+        function playSadSound() {
+            if (!soundEnabled) return;
+            ensureAudio();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(240, now);
+            osc.frequency.linearRampToValueAtTime(130, now + 0.35);
+            gain.gain.setValueAtTime(0.22, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.4);
+        }
+
+        /**************************************************************
+         * 2. CẤU HÌNH 3 CHẾ ĐỘ ĐỘ KHÓ (DỄ 5 PHÚT / TRUNG BÌNH 2 PHÚT / KHÓ 45S)
+         **************************************************************/
+        const DIFFICULTY_SETTINGS = {
+            easy: {
+                id: 'easy',
+                name: 'DỄ',
+                icon: '🌱',
+                badgeLabel: 'DỄ • 05:00/tô',
+                ruleBanner: '🌱 Chế độ Dễ: 05:00 phút mỗi tô • Có tự động vớt bánh & Đèn gợi ý',
+                customerPatienceSeconds: 300, // Đúng 5 phút (300 giây) cho mỗi tô
+                shiftDurationSeconds: 360,    // Ca đêm dài 6 phút thư giãn
+                blanchSpeed: 38,              // Thanh nhiệt độ chạy chậm rãi
+                minPerfectZone: 40,
+                maxPerfectZone: 88,
+                rewardMultiplier: 1.0,
+                spawnIntervalRange: [6, 10],
+                maxMainToppings: 2,
+                autoBlanchDefault: true
+            },
+            medium: {
+                id: 'medium',
+                name: 'TRUNG BÌNH',
+                icon: '🏮',
+                badgeLabel: 'VỪA • 02:00/tô',
+                ruleBanner: '🏮 Chế độ Trung Bình: 02:00 phút mỗi tô • Thưởng x1.25',
+                customerPatienceSeconds: 120, // 2 phút (120 giây)
+                shiftDurationSeconds: 240,
+                blanchSpeed: 52,
+                minPerfectZone: 50,
+                maxPerfectZone: 85,
+                rewardMultiplier: 1.25,
+                spawnIntervalRange: [5, 8],
+                maxMainToppings: 3,
+                autoBlanchDefault: false
+            },
+            hard: {
+                id: 'hard',
+                name: 'KHÓ',
+                icon: '🔥',
+                badgeLabel: 'KHÓ • 00:45/tô',
+                ruleBanner: '🔥 Chế độ Khó: 45 giây mỗi tô • Tiền thưởng & Bo x1.5!',
+                customerPatienceSeconds: 45,  // 45 giây
+                shiftDurationSeconds: 180,
+                blanchSpeed: 72,
+                minPerfectZone: 58,
+                maxPerfectZone: 82,
+                rewardMultiplier: 1.5,
+                spawnIntervalRange: [3.5, 6],
+                maxMainToppings: 4,
+                autoBlanchDefault: false
+            }
+        };
+
+        /**************************************************************
+         * 3. DỮ LIỆU TOPPING & KHÁCH HÀNG
+         **************************************************************/
+        const TOPPINGS = [
+            { id: 'thit', name: 'Thịt heo lát', icon: '🥩', short: 'Thịt nạc' },
+            { id: 'bovien', name: 'Bò viên', icon: '🧆', short: 'Bò viên' },
+            { id: 'tom', name: 'Tôm tươi', icon: '🦐', short: 'Tôm' },
+            { id: 'trungcut', name: 'Trứng cút', icon: '🥚', short: 'Trứng cút' },
+            { id: 'hoanhthanh', name: 'Hoành thánh', icon: '🥟', short: 'Hoành thánh' },
+            { id: 'hanh', name: 'Hành & Tỏi phi', icon: '🌿', short: 'Hành phi' },
+            { id: 'ot', name: 'Ớt hiểm cay', icon: '🌶️', short: 'Ớt cay' }
+        ];
+
+        const CUSTOMER_ARCHETYPES = [
+            { name: 'Chú Tư Xe Ôm', avatar: '🛵', greetings: ['Làm thong thả chú đợi được nghen!', 'Trời lành lạnh ăn tô hủ tiếu là nhất!'] },
+            { name: 'Minh Sinh Viên', avatar: '💻', greetings: ['Cứu đói sinh viên thức học bài với ạ!', 'Cho em tô hủ tiếu thơm phức nha!'] },
+            { name: 'Cô Bảy Hàng Xóm', avatar: '👵', greetings: ['Cho cô tô hủ tiếu nóng hổi nha con!', 'Nước lèo hôm nay thơm dữ thần!'] },
+            { name: 'Anh Tuấn Đi Bão', avatar: '🎺', greetings: ['Nạp năng lượng đêm khuya chủ quán ơi!', 'Cho 1 tô thiệt ngon nghen!'] },
+            { name: 'Chị Lan Ca Đêm', avatar: '🧹', greetings: ['Cho chị tô hủ tiếu gõ quen thuộc nghen!', 'Nghe tiếng gõ cốc cốc là ghé liền!'] }
+        ];
+
+        /**************************************************************
+         * 4. TRẠNG THÁI GAME (GAME STATE)
+         **************************************************************/
+        const state = {
+            difficulty: 'easy',
+            autoBlanch: true,
+            money: 30000,
+            reputation: 100,
+            combo: 1,
+            day: 1,
+            shiftTimeElapsed: 0,
+            shiftDuration: 360,
+            bowlsSoldThisShift: 0,
+            customersLostThisShift: 0,
+            isPaused: true, // Tạm dừng ở màn hình chọn chế độ lúc mới vào
+
+            currentBowl: {
+                blanchState: 'none', // 'none' | 'blanching' | 'under' | 'perfect' | 'over'
+                blanchProgress: 0,
+                brothType: null,     // 'nuoc' | 'kho'
+                toppings: []
+            },
+
+            customerSlots: [null, null, null],
+            selectedSlotIndex: 0,
+            spawnTimer: 2.0,
+            clackCooldown: 0,
+
+            upgrades: {
+                potLevel: 1,      // Nồi nước lèo gia truyền (+8.000đ/tô)
+                basketSpeed: 1,   // Bếp lửa & Vợt trụng nhanh, mở rộng vùng chín
+                bambooCharm: 1,   // Thanh tre vàng (Gõ cốc cốc cộng thêm giây & tiền bo)
+                stoolComfort: 1   // Đèn dầu & Trà đá (Tăng thêm +30s kiên nhẫn mỗi cấp)
+            }
+        };
+
+        const UPGRADE_DEFINITIONS = [
+            {
+                key: 'potLevel',
+                title: 'Nồi Nước Lèo Gia Truyền',
+                icon: '🍲',
+                desc: 'Ninh xương ống & khô mực ngọt lịm, tăng giá bán thêm +8.000đ mỗi tô.',
+                baseCost: 30000,
+                maxLevel: 5
+            },
+            {
+                key: 'basketSpeed',
+                title: 'Bếp Lửa & Vợt Trụng Siêu Tốc',
+                icon: '🔥',
+                desc: 'Mở rộng vùng chín hoàn hảo và giúp bánh chín nhanh, ngon hơn.',
+                baseCost: 25000,
+                maxLevel: 4
+            },
+            {
+                key: 'bambooCharm',
+                title: 'Thanh Tre Vàng Vang Vọng',
+                icon: '🥢',
+                desc: 'Gõ "Cốc Cốc" hồi thêm nhiều thời gian chờ (+30s~60s) và tăng tiền bo.',
+                baseCost: 25000,
+                maxLevel: 4
+            },
+            {
+                key: 'stoolComfort',
+                title: 'Đèn Dầu Lung Linh & Trà Đá',
+                icon: '🏮',
+                desc: 'Khách ngồi mát mẻ, cộng thêm +30 giây thời gian chờ cho mọi khách.',
+                baseCost: 35000,
+                maxLevel: 4
+            }
+        ];
+
+        /**************************************************************
+         * 5. HÀM TIỆN ÍCH & CHỌN CHẾ ĐỘ ĐỘ KHÓ
+         **************************************************************/
+        function formatVND(amount) {
+            return Math.round(amount).toLocaleString('vi-VN') + 'đ';
+        }
+
+        function formatMMSS(seconds) {
+            const s = Math.max(0, Math.ceil(seconds));
+            const mm = String(Math.floor(s / 60)).padStart(2, '0');
+            const ss = String(s % 60).padStart(2, '0');
+            return `${mm}:${ss}`;
+        }
+
+        function getBaseBowlPrice() {
+            return 25000 + (state.upgrades.potLevel - 1) * 8000;
+        }
+
+        function getMaxCustomerPatience() {
+            const diffCfg = DIFFICULTY_SETTINGS[state.difficulty];
+            return diffCfg.customerPatienceSeconds + (state.upgrades.stoolComfort - 1) * 30;
+        }
+
+        function openDifficultyModal() {
+            state.isPaused = true;
+            const modal = document.getElementById('difficultyModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function selectDifficulty(diffKey) {
+            const cfg = DIFFICULTY_SETTINGS[diffKey];
+            state.difficulty = diffKey;
+            state.shiftDuration = cfg.shiftDurationSeconds;
+            state.autoBlanch = cfg.autoBlanchDefault;
+            document.getElementById('autoBlanchToggle').checked = state.autoBlanch;
+
+            // Cập nhật hiển thị trên Header & Banner
+            document.getElementById('diffBadgeIcon').textContent = cfg.icon;
+            document.getElementById('diffBadgeText').textContent = cfg.badgeLabel;
+            document.getElementById('shiftRuleNote').textContent = cfg.ruleBanner;
+
+            // Cập nhật vùng xanh trụng bánh trên thanh hiển thị
+            updatePerfectZoneUI();
+
+            // Cập nhật lại thời gian chờ của các khách hiện tại theo chế độ mới (nếu đổi giữa chừng)
+            const newMax = getMaxCustomerPatience();
+            state.customerSlots.forEach(cust => {
+                if (cust) {
+                    const ratio = cust.patience / cust.maxPatience;
+                    cust.maxPatience = newMax;
+                    cust.patience = Math.max(ratio * newMax, newMax * 0.85);
+                }
+            });
+
+            // Nếu chưa có khách nào thì gọi ngay 2 khách đầu tiên
+            if (state.customerSlots.every(c => c === null)) {
+                spawnCustomerInSlot(0);
+                spawnCustomerInSlot(1);
+            }
+
+            // Đóng modal và bắt đầu chơi
+            const modal = document.getElementById('difficultyModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            state.isPaused = false;
+
+            playBambooClackSound();
+            renderCustomerSlots();
+            renderToppingGrid();
+            updateBowlVisuals();
+            updateTopHUD();
+            showFloatingToast(`${cfg.icon} Đã bật chế độ ${cfg.name} (${formatMMSS(newMax)}/tô)!`, 'text-emerald-300');
+        }
+
+        function toggleAutoBlanch(checked) {
+            state.autoBlanch = checked;
+            playPopSound(600);
+        }
+
+        function updatePerfectZoneUI() {
+            const cfg = DIFFICULTY_SETTINGS[state.difficulty];
+            const bonusZone = (state.upgrades.basketSpeed - 1) * 3;
+            const minP = Math.max(25, cfg.minPerfectZone - bonusZone);
+            const maxP = Math.min(94, cfg.maxPerfectZone + bonusZone);
+            const zoneEl = document.getElementById('perfectZoneIndicator');
+            zoneEl.style.left = minP + '%';
+            zoneEl.style.width = (maxP - minP) + '%';
+        }
+
+        /**************************************************************
+         * 6. KHỞI TẠO & VÒNG LẶP GAME (GAME LOOP)
+         **************************************************************/
+        function initGame() {
+            updatePerfectZoneUI();
+            renderToppingGrid();
+            renderCustomerSlots();
+            updateBowlVisuals();
+            updateTopHUD();
+
+            let lastTime = performance.now();
+            function gameLoop(now) {
+                const dt = Math.min((now - lastTime) / 1000, 0.1);
+                lastTime = now;
+
+                if (!state.isPaused) {
+                    updateGameLogic(dt);
+                }
+                requestAnimationFrame(gameLoop);
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        function updateGameLogic(dt) {
+            const cfg = DIFFICULTY_SETTINGS[state.difficulty];
+
+            // 1. Cập nhật tiến trình đang trụng bánh
+            if (state.currentBowl.blanchState === 'blanching') {
+                state.currentBowl.blanchProgress += cfg.blanchSpeed * dt;
+
+                // Nếu bật "Tự vớt khi chín", tự động vớt ngay giữa vùng xanh hoàn hảo!
+                if (state.autoBlanch && state.currentBowl.blanchProgress >= 65) {
+                    state.currentBowl.blanchProgress = 66;
+                    finishBlanching();
+                } else if (state.currentBowl.blanchProgress >= 100) {
+                    state.currentBowl.blanchProgress = 100;
+                    finishBlanching();
+                }
+                document.getElementById('blanchProgressFill').style.width = state.currentBowl.blanchProgress + '%';
+            }
+
+            // 2. Cập nhật hồi chiêu Gõ Thanh Tre
+            if (state.clackCooldown > 0) {
+                state.clackCooldown = Math.max(0, state.clackCooldown - dt);
+                const maxCd = Math.max(2.0, 5.5 - state.upgrades.bambooCharm * 0.8);
+                const pct = (state.clackCooldown / maxCd) * 100;
+                document.getElementById('clackCooldownBar').style.width = pct + '%';
+            }
+
+            // 3. Cập nhật đồng hồ ca đêm
+            state.shiftTimeElapsed += dt;
+            updateNightClock();
+            if (state.shiftTimeElapsed >= state.shiftDuration) {
+                endNightShift();
+                return;
+            }
+
+            // 4. Tự động sinh khách mới nếu còn ghế trống
+            state.spawnTimer -= dt;
+            if (state.spawnTimer <= 0) {
+                const emptySlotIdx = state.customerSlots.findIndex(c => c === null);
+                if (emptySlotIdx !== -1) {
+                    spawnCustomerInSlot(emptySlotIdx);
+                }
+                const [minS, maxS] = cfg.spawnIntervalRange;
+                state.spawnTimer = minS + Math.random() * (maxS - minS);
+            }
+
+            // 5. Đếm ngược thời gian chờ (phút:giây) của từng khách
+            let needReRenderSlots = false;
+            state.customerSlots.forEach((cust, idx) => {
+                if (!cust) return;
+                cust.patience -= dt;
+
+                const barEl = document.getElementById(`patienceBar_${idx}`);
+                const timerTextEl = document.getElementById(`patienceTimerText_${idx}`);
+                const pct = Math.max(0, (cust.patience / cust.maxPatience) * 100);
+
+                if (barEl) {
+                    barEl.style.width = pct + '%';
+                    if (pct > 50) {
+                        barEl.className = 'h-full bg-emerald-400 transition-all duration-100';
+                    } else if (pct > 22) {
+                        barEl.className = 'h-full bg-amber-400 transition-all duration-100';
+                    } else {
+                        barEl.className = 'h-full bg-rose-500 animate-pulse transition-all duration-100';
+                    }
+                }
+                if (timerTextEl) {
+                    timerTextEl.textContent = `⏳ ${formatMMSS(cust.patience)}`;
+                }
+
+                if (cust.patience <= 0) {
+                    handleCustomerLeaveAngry(idx);
+                    needReRenderSlots = true;
+                }
+            });
+
+            if (needReRenderSlots) {
+                renderCustomerSlots();
+                renderToppingGrid();
+                updateBowlVisuals();
+            }
+        }
+
+        function updateNightClock() {
+            const progress = Math.min(1, state.shiftTimeElapsed / state.shiftDuration);
+            const totalMinutes = Math.floor(progress * 300); // 21:00 -> 02:00
+            let hour = (21 + Math.floor(totalMinutes / 60)) % 24;
+            let min = Math.floor((totalMinutes % 60) / 10) * 10;
+            document.getElementById('clockDisplay').textContent =
+                `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+        }
+
+        /**************************************************************
+         * 7. SINH ĐƠN ĐẶT HÀNG & HIỂN THỊ 3 GHẾ KHÁCH NGỒI
+         **************************************************************/
+        function generateRandomOrder() {
+            const cfg = DIFFICULTY_SETTINGS[state.difficulty];
+            const brothType = Math.random() > 0.4 ? 'nuoc' : 'kho';
+            const mainPool = ['thit', 'bovien', 'tom', 'trungcut', 'hoanhthanh'];
+            const shuffled = [...mainPool].sort(() => Math.random() - 0.5);
+            const count = Math.min(cfg.maxMainToppings, 2 + Math.floor(Math.random() * 2));
+            const chosenToppings = shuffled.slice(0, count);
+
+            // Hành phi (75% khách ăn hành)
+            const wantsOnion = Math.random() > 0.25;
+            if (wantsOnion) chosenToppings.push('hanh');
+
+            // Ớt cay (35% khách ăn ớt)
+            const wantsChili = Math.random() < 0.35;
+            if (wantsChili) chosenToppings.push('ot');
+
+            return {
+                brothType,
+                toppings: chosenToppings
+            };
+        }
+
+        function spawnCustomerInSlot(slotIndex) {
+            const arch = CUSTOMER_ARCHETYPES[Math.floor(Math.random() * CUSTOMER_ARCHETYPES.length)];
+            const order = generateRandomOrder();
+            const maxPatience = getMaxCustomerPatience();
+
+            state.customerSlots[slotIndex] = {
+                id: Date.now() + Math.random(),
+                name: arch.name,
+                avatar: arch.avatar,
+                greeting: arch.greetings[Math.floor(Math.random() * arch.greetings.length)],
+                order,
+                maxPatience,
+                patience: maxPatience
+            };
+
+            // Nếu ghế đang chọn chưa có khách thì tự động chọn ghế vừa mới vào
+            if (!state.customerSlots[state.selectedSlotIndex]) {
+                state.selectedSlotIndex = slotIndex;
+            }
+
+            renderCustomerSlots();
+            renderToppingGrid();
+            updateBowlVisuals();
+        }
+
+        function selectCustomerSlot(idx) {
+            state.selectedSlotIndex = idx;
+            playPopSound(640);
+            renderCustomerSlots();
+            renderToppingGrid();
+            updateBowlVisuals();
+        }
+
+        function renderCustomerSlots() {
+            const container = document.getElementById('customerSlotsContainer');
+            container.innerHTML = '';
+
+            state.customerSlots.forEach((cust, idx) => {
+                const isSelected = state.selectedSlotIndex === idx;
+
+                if (!cust) {
+                    const emptyCard = document.createElement('div');
+                    emptyCard.className = `rounded-2xl border-2 border-dashed ${
+                        isSelected ? 'border-amber-400 bg-slate-800/50' : 'border-slate-700 bg-slate-900/40'
+                    } p-3 flex flex-col items-center justify-center text-center min-h-[155px] transition cursor-pointer`;
+                    emptyCard.onclick = () => selectCustomerSlot(idx);
+                    emptyCard.innerHTML = `
+                        <div class="w-10 h-10 rounded-xl bg-red-600/80 border-2 border-red-400 flex items-center justify-center text-xl mb-1 shadow">🪑</div>
+                        <p class="text-xs font-bold text-slate-300">Ghế Đẩu Đỏ #${idx + 1} Đang Trống</p>
+                        <p class="text-[11px] text-amber-300 mt-1">Bấm <b>"Gõ Cốc Cốc! 🥢"</b> ở góc trên để gọi khách!</p>
+                    `;
+                    container.appendChild(emptyCard);
+                    return;
+                }
+
+                const pct = Math.max(0, (cust.patience / cust.maxPatience) * 100);
+                const card = document.createElement('div');
+                card.onclick = () => selectCustomerSlot(idx);
+                card.className = `rounded-2xl p-3 transition cursor-pointer relative flex flex-col justify-between ${
+                    isSelected
+                        ? 'bg-gradient-to-b from-amber-500/25 to-slate-900 border-3 border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.35)]'
+                        : 'bg-slate-900/90 border-2 border-slate-700 hover:border-slate-500'
+                }`;
+
+                // Tạo danh sách thẻ nguyên liệu cực kỳ rõ ràng
+                const badgeIcons = cust.order.toppings.map(tId => {
+                    const tObj = TOPPINGS.find(t => t.id === tId);
+                    const alreadyInBowl = isSelected && state.currentBowl.toppings.includes(tId);
+                    return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-xs font-black border ${
+                        alreadyInBowl
+                            ? 'bg-emerald-500 text-slate-950 border-white'
+                            : 'bg-amber-100 text-slate-900 border-amber-400'
+                    }">${tObj.icon} ${tObj.short} ${alreadyInBowl ? '✓' : ''}</span>`;
+                }).join(' ');
+
+                const brothMatched = isSelected && state.currentBowl.brothType === cust.order.brothType;
+
+                card.innerHTML = `
+                    <!-- Hàng 1: Avatar khách + Tên + Đồng hồ đếm ngược MM:SS to rõ -->
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <div class="flex items-center gap-2 min-w-0">
+                            <div class="w-10 h-10 rounded-xl bg-red-600 border-2 border-amber-200 flex items-center justify-center text-2xl shadow shrink-0">
+                                ${cust.avatar}
+                            </div>
+                            <div class="min-w-0">
+                                <div class="font-black text-xs sm:text-sm text-amber-200 truncate">${cust.name}</div>
+                                <div class="text-[11px] text-slate-300 truncate">Ghế #${idx + 1} • ${isSelected ? '<b class="text-yellow-300">ĐANG LÀM TÔ NÀY</b>' : 'Bấm để chọn làm'}</div>
+                            </div>
+                        </div>
+
+                        <div class="shrink-0 text-right">
+                            <span id="patienceTimerText_${idx}" class="inline-block bg-slate-950 border border-amber-400/70 text-amber-300 font-black text-xs sm:text-sm px-2.5 py-1 rounded-xl">
+                                ⏳ ${formatMMSS(cust.patience)}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Hàng 2: Danh sách nguyên liệu khách yêu cầu (Visual Order Tags) -->
+                    <div class="bg-slate-950/90 border border-slate-700 rounded-xl p-2 mb-2">
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <span class="px-2 py-0.5 rounded-lg text-xs font-black border ${
+                                brothMatched
+                                    ? 'bg-emerald-500 text-slate-950 border-white'
+                                    : cust.order.brothType === 'nuoc'
+                                        ? 'bg-sky-600 text-white border-sky-300'
+                                        : 'bg-amber-700 text-white border-amber-400'
+                            }">
+                                ${cust.order.brothType === 'nuoc' ? '🥄 Hủ Tiếu NƯỚC' : '🫗 Hủ Tiếu KHÔ'} ${brothMatched ? '✓' : ''}
+                            </span>
+                            ${badgeIcons}
+                        </div>
+                    </div>
+
+                    <!-- Hàng 3: Thanh thời gian chờ -->
+                    <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden border border-slate-600">
+                        <div id="patienceBar_${idx}" class="h-full bg-emerald-400" style="width: ${pct}%;"></div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function handleCustomerLeaveAngry(slotIdx) {
+            const cust = state.customerSlots[slotIdx];
+            if (!cust) return;
+            playSadSound();
+            state.customerSlots[slotIdx] = null;
+            state.customersLostThisShift++;
+            state.combo = 1;
+            state.reputation = Math.max(0, state.reputation - 5);
+            showFloatingToast(`😣 ${cust.name} đã hết giờ chờ và rời quán!`, 'text-rose-400');
+            updateTopHUD();
+        }
+
+        /**************************************************************
+         * 8. GÕ THANH TRE "CỐC CỐC!" (+30 GIÂY CHỜ & GỌI KHÁCH)
+         **************************************************************/
+        function clackBamboo() {
+            if (state.clackCooldown > 0) return;
+            playBambooClackSound();
+
+            const btn = document.getElementById('bambooClackBtn');
+            btn.classList.remove('clack-anim');
+            void btn.offsetWidth;
+            btn.classList.add('clack-anim');
+
+            const maxCd = Math.max(2.0, 5.5 - state.upgrades.bambooCharm * 0.8);
+            state.clackCooldown = maxCd;
+
+            // Hồi thêm 30 giây (+10 giây mỗi cấp nâng cấp thanh tre) cho tất cả khách
+            const extraSeconds = 30 + (state.upgrades.bambooCharm - 1) * 10;
+            let boostedCount = 0;
+            state.customerSlots.forEach(cust => {
+                if (cust) {
+                    cust.patience = Math.min(cust.maxPatience, cust.patience + extraSeconds);
+                    boostedCount++;
+                }
+            });
+
+            // Nếu có ghế trống thì gọi ngay 1 khách mới
+            const emptyIdx = state.customerSlots.findIndex(c => c === null);
+            if (emptyIdx !== -1) {
+                spawnCustomerInSlot(emptyIdx);
+                showFloatingToast(`🥢 Cốc! Cốc! Khách mới ghé & +${extraSeconds}s chờ!`, 'text-amber-300');
+            } else if (boostedCount > 0) {
+                showFloatingToast(`🥢 Cốc! Cốc! Đã cộng thêm +${extraSeconds} giây chờ cho khách!`, 'text-emerald-300');
+            }
+
+            renderCustomerSlots();
+        }
+
+        /**************************************************************
+         * 9. CHẾ BIẾN TÔ HỦ TIẾU VỚI HỆ THỐNG ĐÈN GỢI Ý THÔNG MINH
+         **************************************************************/
+        function handleBlanchButton() {
+            const bowl = state.currentBowl;
+            const btnLabel = document.getElementById('blanchBtnLabel');
+            const statusText = document.getElementById('blanchStatusText');
+
+            if (bowl.blanchState === 'none') {
+                bowl.blanchState = 'blanching';
+                bowl.blanchProgress = 0;
+                playSizzleSound();
+                btnLabel.textContent = state.autoBlanch
+                    ? '⏳ ĐANG TRỤNG (Sẽ tự động vớt)...'
+                    : '🔥 BẤM ĐỂ VỚT RA NGAY!';
+                statusText.textContent = 'Đang trụng...';
+                statusText.className = 'text-amber-300 animate-pulse font-bold';
+            } else if (bowl.blanchState === 'blanching') {
+                finishBlanching();
+            } else {
+                showFloatingToast('✅ Tô đã có bánh hủ tiếu rồi, hãy chọn Bước 2 & Bước 3!', 'text-amber-300');
+            }
+        }
+
+        function finishBlanching() {
+            const bowl = state.currentBowl;
+            const p = bowl.blanchProgress;
+            const cfg = DIFFICULTY_SETTINGS[state.difficulty];
+            const bonusZone = (state.upgrades.basketSpeed - 1) * 3;
+            const minPerfect = Math.max(25, cfg.minPerfectZone - bonusZone);
+            const maxPerfect = Math.min(94, cfg.maxPerfectZone + bonusZone);
+
+            const btnLabel = document.getElementById('blanchBtnLabel');
+            const statusText = document.getElementById('blanchStatusText');
+
+            if (p >= minPerfect && p <= maxPerfect) {
+                bowl.blanchState = 'perfect';
+                statusText.textContent = '✨ Chín Tới Hoàn Hảo!';
+                statusText.className = 'text-emerald-400 font-black';
+                playPopSound(720);
+            } else if (p < minPerfect) {
+                bowl.blanchState = 'under';
+                statusText.textContent = '⚠️ Hơi cứng';
+                statusText.className = 'text-amber-400 font-bold';
+                playPopSound(420);
+            } else {
+                bowl.blanchState = 'over';
+                statusText.textContent = '💦 Hơi mềm';
+                statusText.className = 'text-amber-400 font-bold';
+                playPopSound(360);
+            }
+
+            btnLabel.textContent = '✅ ĐÃ CÓ BÁNH HỦ TIẾU TRONG TÔ';
+            renderCustomerSlots();
+            updateBowlVisuals();
+        }
+
+        // BƯỚC 2: CHỌN CHAN NƯỚC LÈO HOẶC TRỘN SỐT KHÔ (Tự động trụng bánh nếu người chơi quên Bước 1 ở chế độ Dễ!)
+        function selectBrothType(type) {
+            if (state.currentBowl.blanchState === 'none') {
+                // Hỗ trợ tiện lợi: Nếu người chơi bấm thẳng Bước 2 mà quên bấm Bước 1, tự động cho bánh vào tô luôn!
+                state.currentBowl.blanchState = 'perfect';
+                document.getElementById('blanchProgressFill').style.width = '66%';
+                document.getElementById('blanchBtnLabel').textContent = '✅ ĐÃ CÓ BÁNH HỦ TIẾU TRONG TÔ';
+                document.getElementById('blanchStatusText').textContent = '✨ Đã tự trụng bánh!';
+                document.getElementById('blanchStatusText').className = 'text-emerald-400 font-black';
+            } else if (state.currentBowl.blanchState === 'blanching') {
+                finishBlanching();
+            }
+
+            state.currentBowl.brothType = type;
+            playPopSound(type === 'nuoc' ? 580 : 620);
+            renderCustomerSlots();
+            updateBowlVisuals();
+        }
+
+        // BƯỚC 3: CHỌN TOPPING TRONG TỦ KÍNH
+        function toggleToppingInBowl(toppingId) {
+            if (state.currentBowl.blanchState === 'none') {
+                // Tự động bỏ bánh hủ tiếu vào tô nếu người chơi bấm chọn topping luôn
+                state.currentBowl.blanchState = 'perfect';
+                document.getElementById('blanchProgressFill').style.width = '66%';
+                document.getElementById('blanchBtnLabel').textContent = '✅ ĐÃ CÓ BÁNH HỦ TIẾU TRONG TÔ';
+                document.getElementById('blanchStatusText').textContent = '✨ Đã tự trụng bánh!';
+                document.getElementById('blanchStatusText').className = 'text-emerald-400 font-black';
+            } else if (state.currentBowl.blanchState === 'blanching') {
+                finishBlanching();
+            }
+
+            const idx = state.currentBowl.toppings.indexOf(toppingId);
+            if (idx === -1) {
+                state.currentBowl.toppings.push(toppingId);
+                playPopSound(680);
+            } else {
+                state.currentBowl.toppings.splice(idx, 1);
+                playPopSound(440);
+            }
+            renderToppingGrid();
+            renderCustomerSlots();
+            updateBowlVisuals();
+        }
+
+        // HIỂN THỊ 7 KHAY TOPPING VỚI ĐÈN BÁO "★ CẦN CHỌN" THEO KHÁCH ĐANG CHỌN
+        function renderToppingGrid() {
+            const grid = document.getElementById('toppingGrid');
+            grid.innerHTML = '';
+
+            const activeCust = state.customerSlots[state.selectedSlotIndex];
+            const requiredToppings = activeCust ? activeCust.order.toppings : [];
+
+            TOPPINGS.forEach(item => {
+                const isAdded = state.currentBowl.toppings.includes(item.id);
+                const isNeededByCustomer = requiredToppings.includes(item.id);
+
+                const btn = document.createElement('button');
+                btn.onclick = () => toggleToppingInBowl(item.id);
+
+                let styleClass = '';
+                let statusLabel = '';
+
+                if (isAdded && isNeededByCustomer) {
+                    // Đã bỏ đúng món khách cần
+                    styleClass = 'bg-emerald-500 text-slate-950 border-white font-black shadow-md';
+                    statusLabel = '✅ Đã bỏ đúng';
+                } else if (isAdded && !isNeededByCustomer) {
+                    // Đã bỏ vào tô nhưng khách KHÔNG gọi món này -> Báo màu cam để người chơi biết bấm gỡ ra
+                    styleClass = 'bg-rose-600 text-white border-rose-200 font-black shadow-md';
+                    statusLabel = '⚠️ Dư! Bấm để gỡ';
+                } else if (!isAdded && isNeededByCustomer) {
+                    // Khách đang cần mà chưa bỏ vào tô -> Viền vàng lấp lánh
+                    styleClass = 'bg-[#2a1f14] hover:bg-[#3d2d1d] text-amber-100 border-2 highlight-needed font-bold';
+                    statusLabel = '★ CẦN CHỌN';
+                } else {
+                    // Khách không gọi & chưa bỏ
+                    styleClass = 'bg-[#1b120f] hover:bg-[#2c1e19] text-slate-300 border-[#4e342e] opacity-80';
+                    statusLabel = 'Khách không gọi';
+                }
+
+                btn.className = `street-btn p-2.5 rounded-xl border-2 flex items-center gap-2.5 text-left transition relative ${styleClass}`;
+                btn.innerHTML = `
+                    <span class="text-2xl shrink-0">${item.icon}</span>
+                    <div class="leading-tight min-w-0 flex-1">
+                        <div class="text-xs sm:text-sm font-black truncate">${item.name}</div>
+                        <div class="text-[11px] mt-0.5 ${
+                            isAdded
+                                ? 'font-black'
+                                : isNeededByCustomer
+                                    ? 'text-yellow-300 font-black'
+                                    : 'text-slate-400'
+                        }">
+                            ${statusLabel}
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
+        // CẬP NHẬT BẢNG ĐỐI CHIẾU CÔNG THỨC TRỰC TIẾP & HÌNH VẼ TÔ SVG
+        function updateBowlVisuals() {
+            const bowl = state.currentBowl;
+            const activeCust = state.customerSlots[state.selectedSlotIndex];
+
+            const noodleLayer = document.getElementById('svgNoodleLayer');
+            const brothLayer = document.getElementById('svgBrothLayer');
+            const toppingsLayer = document.getElementById('svgToppingsLayer');
+            const summaryEl = document.getElementById('currentBowlSummary');
+
+            // 1. Đèn gợi ý cho Bước 2 (Chan Nước Lèo / Trộn Sốt Khô)
+            const btnNuoc = document.getElementById('btnTypeNuoc');
+            const btnKho = document.getElementById('btnTypeKho');
+            const badgeNuoc = document.getElementById('badgeNeedNuoc');
+            const badgeKho = document.getElementById('badgeNeedKho');
+
+            const needNuoc = activeCust && activeCust.order.brothType === 'nuoc';
+            const needKho = activeCust && activeCust.order.brothType === 'kho';
+
+            badgeNuoc.classList.toggle('hidden', !needNuoc);
+            badgeKho.classList.toggle('hidden', !needKho);
+
+            btnNuoc.className = `street-btn py-3 px-2 rounded-xl border-2 flex flex-col items-center gap-1 text-xs relative ${
+                bowl.brothType === 'nuoc'
+                    ? 'bg-emerald-500 text-slate-950 border-white font-black shadow-lg'
+                    : needNuoc
+                        ? 'bg-sky-800 hover:bg-sky-700 text-white highlight-needed'
+                        : 'bg-sky-950 hover:bg-sky-900 text-slate-300 border-sky-800 opacity-75'
+            }`;
+
+            btnKho.className = `street-btn py-3 px-2 rounded-xl border-2 flex flex-col items-center gap-1 text-xs relative ${
+                bowl.brothType === 'kho'
+                    ? 'bg-emerald-500 text-slate-950 border-white font-black shadow-lg'
+                    : needKho
+                        ? 'bg-amber-800 hover:bg-amber-700 text-white highlight-needed'
+                        : 'bg-amber-950 hover:bg-amber-900 text-slate-300 border-amber-800 opacity-75'
+            }`;
+
+            // 2. Cập nhật Bảng Công Thức Đối Chiếu Trực Tiếp (Live Recipe Checklist)
+            const targetNameEl = document.getElementById('recipeTargetName');
+            const matchStatusEl = document.getElementById('recipeMatchStatus');
+            const checklistEl = document.getElementById('liveRecipeChecklist');
+            const selectedTargetLabel = document.getElementById('selectedTargetLabel');
+
+            if (!activeCust) {
+                targetNameEl.textContent = `Ghế #${state.selectedSlotIndex + 1} Đang Trống`;
+                matchStatusEl.textContent = 'Chưa có khách';
+                matchStatusEl.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400';
+                checklistEl.innerHTML = `<span class="text-slate-400 italic">Hãy bấm chọn ghế có khách hoặc bấm "Gõ Cốc Cốc" gọi khách!</span>`;
+                selectedTargetLabel.textContent = `Ghế #${state.selectedSlotIndex + 1} (Đang trống)`;
+            } else {
+                targetNameEl.textContent = `Công Thức Của: ${activeCust.name} (Ghế #${state.selectedSlotIndex + 1})`;
+                selectedTargetLabel.textContent = `Giao cho: ${activeCust.name} (Ghế #${state.selectedSlotIndex + 1})`;
+
+                const hasNoodle = ['perfect', 'under', 'over'].includes(bowl.blanchState);
+                const hasRightBroth = bowl.brothType === activeCust.order.brothType;
+                const missingToppings = activeCust.order.toppings.filter(id => !bowl.toppings.includes(id));
+                const extraToppings = bowl.toppings.filter(id => !activeCust.order.toppings.includes(id));
+                const isCompleteMatch = hasNoodle && hasRightBroth && missingToppings.length === 0 && extraToppings.length === 0;
+
+                if (isCompleteMatch) {
+                    matchStatusEl.textContent = '✅ ĐÃ ĐỦ MÓN! BẤM BƯNG RA NGAY!';
+                    matchStatusEl.className = 'text-[11px] font-black px-2.5 py-0.5 rounded-full bg-emerald-400 text-slate-950 animate-bounce';
+                } else {
+                    matchStatusEl.textContent = 'Đang làm theo đơn...';
+                    matchStatusEl.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/40';
+                }
+
+                const checkItems = [];
+                // Check Bước 1: Bánh
+                checkItems.push(`<span class="px-2 py-0.5 rounded-md font-bold ${hasNoodle ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-amber-300 border border-amber-500/50'}">
+                    ${hasNoodle ? '✅' : '1️⃣'} Bánh hủ tiếu
+                </span>`);
+
+                // Check Bước 2: Nước / Khô
+                const brothLabel = activeCust.order.brothType === 'nuoc' ? 'Chan Nước' : 'Trộn Khô';
+                checkItems.push(`<span class="px-2 py-0.5 rounded-md font-bold ${hasRightBroth ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-amber-300 border border-amber-500/50'}">
+                    ${hasRightBroth ? '✅' : '2️⃣'} ${brothLabel}
+                </span>`);
+
+                // Check Bước 3: Từng Topping
+                activeCust.order.toppings.forEach(tId => {
+                    const tObj = TOPPINGS.find(t => t.id === tId);
+                    const done = bowl.toppings.includes(tId);
+                    checkItems.push(`<span class="px-2 py-0.5 rounded-md font-bold ${done ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-yellow-300 border border-yellow-400/60'}">
+                        ${done ? '✅' : '➕'} ${tObj.icon} ${tObj.short}
+                    </span>`);
+                });
+
+                // Báo nếu lỡ bỏ dư topping
+                extraToppings.forEach(tId => {
+                    const tObj = TOPPINGS.find(t => t.id === tId);
+                    checkItems.push(`<span class="px-2 py-0.5 rounded-md font-black bg-rose-600 text-white">
+                        ⚠️ Dư ${tObj.short}
+                    </span>`);
+                });
+
+                checklistEl.innerHTML = checkItems.join('');
+            }
+
+            // 3. Vẽ SVG Tô Hủ Tiếu
+            if (['perfect', 'under', 'over'].includes(bowl.blanchState)) {
+                noodleLayer.classList.remove('opacity-0');
+                noodleLayer.classList.add('opacity-100');
+            } else {
+                noodleLayer.classList.remove('opacity-100');
+                noodleLayer.classList.add('opacity-0');
+            }
+
+            if (bowl.brothType === 'nuoc') {
+                brothLayer.setAttribute('fill', '#f59e0b');
+                brothLayer.setAttribute('opacity', '0.55');
+            } else if (bowl.brothType === 'kho') {
+                brothLayer.setAttribute('fill', '#78350f');
+                brothLayer.setAttribute('opacity', '0.68');
+            } else {
+                brothLayer.setAttribute('fill', 'transparent');
+            }
+
+            let svgMarkup = '';
+            if (bowl.toppings.includes('thit')) {
+                svgMarkup += `
+                    <ellipse cx="82" cy="86" rx="18" ry="11" fill="#fecdd3" stroke="#f43f5e" stroke-width="2"/>
+                    <ellipse cx="95" cy="96" rx="17" ry="10" fill="#ffe4e6" stroke="#fb7185" stroke-width="2"/>
+                `;
+            }
+            if (bowl.toppings.includes('bovien')) {
+                svgMarkup += `
+                    <circle cx="136" cy="84" r="11" fill="#78350f" stroke="#451a03" stroke-width="2"/>
+                    <circle cx="148" cy="98" r="10" fill="#78350f" stroke="#451a03" stroke-width="2"/>
+                `;
+            }
+            if (bowl.toppings.includes('tom')) {
+                svgMarkup += `
+                    <path d="M72 128 C62 112, 85 102, 95 118 C88 122, 80 128, 72 128 Z" fill="#fb923c" stroke="#ea580c" stroke-width="2"/>
+                    <path d="M84 140 C74 124, 97 114, 107 130 Z" fill="#f97316" stroke="#c2410c" stroke-width="2"/>
+                `;
+            }
+            if (bowl.toppings.includes('trungcut')) {
+                svgMarkup += `
+                    <ellipse cx="132" cy="134" rx="12" ry="9" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                    <circle cx="132" cy="134" r="5" fill="#f59e0b"/>
+                    <ellipse cx="115" cy="145" rx="11" ry="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                    <circle cx="115" cy="145" r="4.5" fill="#f59e0b"/>
+                `;
+            }
+            if (bowl.toppings.includes('hoanhthanh')) {
+                svgMarkup += `
+                    <polygon points="108,68 124,78 112,92 96,80" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>
+                    <circle cx="110" cy="80" r="5" fill="#facc15"/>
+                `;
+            }
+            if (bowl.toppings.includes('hanh')) {
+                svgMarkup += `
+                    <circle cx="98" cy="110" r="3.5" fill="#16a34a"/>
+                    <circle cx="112" cy="104" r="3.5" fill="#15803d"/>
+                    <circle cx="122" cy="115" r="3.5" fill="#16a34a"/>
+                    <circle cx="104" cy="120" r="3" fill="#ca8a04"/>
+                    <circle cx="116" cy="110" r="3" fill="#d97706"/>
+                `;
+            }
+            if (bowl.toppings.includes('ot')) {
+                svgMarkup += `
+                    <circle cx="108" cy="108" r="5" fill="#dc2626" stroke="#7f1d1d" stroke-width="1"/>
+                    <circle cx="118" cy="100" r="4.5" fill="#ef4444" stroke="#7f1d1d" stroke-width="1"/>
+                    <circle cx="96" cy="102" r="4.5" fill="#dc2626" stroke="#7f1d1d" stroke-width="1"/>
+                `;
+            }
+            toppingsLayer.innerHTML = svgMarkup;
+
+            // 4. Dòng trạng thái bên dưới tô
+            if (bowl.blanchState === 'none' || bowl.blanchState === 'blanching') {
+                summaryEl.innerHTML = `<span class="text-slate-300">👉 Hãy bấm <b>"Trụng Bánh"</b> (hoặc chọn thẳng Nước/Khô & Topping)</span>`;
+                return;
+            }
+            summaryEl.innerHTML = `<span class="text-emerald-300 font-bold">Tô hiện có: Bánh hủ tiếu ${
+                bowl.brothType ? (bowl.brothType === 'nuoc' ? '+ Nước lèo' : '+ Sốt khô') : '(Chưa chọn Nước/Khô)'
+            } + ${bowl.toppings.length} món topping</span>`;
+        }
+
+        function trashBowl() {
+            resetBowl();
+            playPopSound(380);
+            showFloatingToast('🔄 Đã làm mới tô (Không bị trừ tiền)!', 'text-amber-300');
+        }
+
+        function resetBowl() {
+            state.currentBowl = {
+                blanchState: 'none',
+                blanchProgress: 0,
+                brothType: null,
+                toppings: []
+            };
+            document.getElementById('blanchProgressFill').style.width = '0%';
+            document.getElementById('blanchBtnLabel').textContent = 'BẤM ĐỂ TRỤNG BÁNH HỦ TIẾU';
+            const statusText = document.getElementById('blanchStatusText');
+            statusText.textContent = 'Chưa nhúng vợt';
+            statusText.className = 'text-amber-400 font-black';
+
+            renderToppingGrid();
+            renderCustomerSlots();
+            updateBowlVisuals();
+        }
+
+        /**************************************************************
+         * 10. BƯNG TÔ RA PHỤC VỤ KHÁCH HÀNG
+         **************************************************************/
+        function serveSelectedCustomer() {
+            // Nếu ghế đang chọn trống nhưng có ghế khác đang có khách, tự động tìm khách khớp đơn
+            let targetIdx = state.selectedSlotIndex;
+            if (!state.customerSlots[targetIdx]) {
+                const firstOccupied = state.customerSlots.findIndex(c => c !== null);
+                if (firstOccupied !== -1) {
+                    targetIdx = firstOccupied;
+                    state.selectedSlotIndex = firstOccupied;
+                } else {
+                    playSadSound();
+                    showFloatingToast('⚠️ Hiện chưa có khách! Hãy bấm "Gõ Cốc Cốc" để gọi khách!', 'text-amber-300');
+                    return;
+                }
+            }
+
+            const cust = state.customerSlots[targetIdx];
+            const bowl = state.currentBowl;
+
+            if (bowl.blanchState === 'none' || bowl.blanchState === 'blanching') {
+                playSadSound();
+                showFloatingToast('⚠️ Hãy trụng bánh hủ tiếu trước khi bưng ra nhé!', 'text-rose-400');
+                return;
+            }
+            if (!bowl.brothType) {
+                playSadSound();
+                showFloatingToast('⚠️ Hãy chọn "Chan Nước Lèo" hoặc "Trộn Sốt Khô" ở Bước 2!', 'text-rose-400');
+                return;
+            }
+
+            const order = cust.order;
+            let mistakes = [];
+
+            if (bowl.brothType !== order.brothType) {
+                mistakes.push(order.brothType === 'nuoc' ? 'Khách cần Nước' : 'Khách cần Khô');
+            }
+            order.toppings.forEach(reqId => {
+                if (!bowl.toppings.includes(reqId)) {
+                    mistakes.push(`Thiếu ${TOPPINGS.find(t => t.id === reqId).short}`);
+                }
+            });
+            bowl.toppings.forEach(addedId => {
+                if (!order.toppings.includes(addedId)) {
+                    mistakes.push(`Dư ${TOPPINGS.find(t => t.id === addedId).short}`);
+                }
+            });
+
+            const cfg = DIFFICULTY_SETTINGS[state.difficulty];
+            const basePrice = getBaseBowlPrice();
+
+            if (mistakes.length === 0) {
+                playCoinSound();
+                const speedRatio = cust.patience / cust.maxPatience;
+                let tip = Math.round((speedRatio * 10000) / 1000) * 1000;
+                if (bowl.blanchState === 'perfect') tip += 5000;
+                tip += (state.upgrades.bambooCharm - 1) * 3000;
+
+                const comboBonus = (state.combo - 1) * 2000;
+                const totalEarned = Math.round(((basePrice + tip + comboBonus) * cfg.rewardMultiplier) / 1000) * 1000;
+
+                state.money += totalEarned;
+                state.bowlsSoldThisShift++;
+                state.combo = Math.min(10, state.combo + 1);
+                state.reputation = Math.min(100, state.reputation + 2);
+
+                showFloatingToast(`🎉 +${formatVND(totalEarned)}! Khách khen ngon tuyệt!`, 'text-emerald-300');
+            } else if (mistakes.length <= 2) {
+                // Chế độ thân thiện: Dù nhầm 1-2 món nhỏ vẫn được nhận tiền khích lệ!
+                playPopSound(420);
+                const partialPay = Math.round((basePrice * 0.7) / 1000) * 1000;
+                state.money += partialPay;
+                state.bowlsSoldThisShift++;
+                state.combo = 1;
+                showFloatingToast(`+${formatVND(partialPay)} (Lưu ý: ${mistakes[0]})`, 'text-amber-300');
+            } else {
+                playSadSound();
+                state.combo = 1;
+                showFloatingToast(`⚠️ Chưa đúng ý khách (${mistakes[0]}), hãy nhìn đèn vàng gợi ý nhé!`, 'text-rose-400');
+                return; // Giữ tô lại để người chơi sửa tiếp mà không mất khách!
+            }
+
+            // Phục vụ xong -> Khách rời ghế
+            state.customerSlots[targetIdx] = null;
+
+            // Tự động chuyển sang khách tiếp theo đang ngồi đợi
+            const nextOccupied = state.customerSlots.findIndex(c => c !== null);
+            if (nextOccupied !== -1) {
+                state.selectedSlotIndex = nextOccupied;
+            }
+
+            resetBowl();
+            updateTopHUD();
+        }
+
+        /**************************************************************
+         * 11. CẬP NHẬT HUD & CỬA HÀNG NÂNG CẤP
+         **************************************************************/
+        function updateTopHUD() {
+            document.getElementById('moneyDisplay').textContent = formatVND(state.money);
+            document.getElementById('modalMoneyDisplay').textContent = formatVND(state.money);
+            document.getElementById('repDisplay').textContent = state.reputation + '%';
+            document.getElementById('comboBadge').textContent = 'x' + state.combo;
+            document.getElementById('dayNum').textContent = state.day;
+            document.getElementById('potLevelBadge').textContent = state.upgrades.potLevel;
+            document.getElementById('basePriceLabel').textContent = `${formatVND(getBaseBowlPrice())} / tô`;
+        }
+
+        function showFloatingToast(message, colorClass = 'text-amber-300') {
+            const container = document.getElementById('floatingFeedbackContainer');
+            const el = document.createElement('div');
+            el.className = `floating-toast font-black text-xs sm:text-sm bg-slate-950/95 border-2 border-amber-400 px-3 py-1.5 rounded-xl shadow-xl text-center ${colorClass}`;
+            el.textContent = message;
+            container.appendChild(el);
+            setTimeout(() => el.remove(), 1400);
+        }
+
+        function toggleUpgradeModal(show) {
+            state.isPaused = show;
+            const modal = document.getElementById('upgradeModal');
+            if (show) {
+                renderUpgradeItems();
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function renderUpgradeItems() {
+            updateTopHUD();
+            const listEl = document.getElementById('upgradeItemsList');
+            listEl.innerHTML = '';
+
+            UPGRADE_DEFINITIONS.forEach(up => {
+                const currentLv = state.upgrades[up.key];
+                const isMax = currentLv >= up.maxLevel;
+                const cost = up.baseCost * currentLv;
+                const canAfford = state.money >= cost && !isMax;
+
+                const row = document.createElement('div');
+                row.className = 'bg-[#19110e] border-2 border-[#5d4037] rounded-2xl p-3 flex items-center justify-between gap-3';
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/50 flex items-center justify-center text-2xl shrink-0">
+                            ${up.icon}
+                        </div>
+                        <div>
+                            <div class="font-black text-sm text-amber-300">${up.title} <span class="text-xs text-emerald-400">(Cấp ${currentLv}/${up.maxLevel})</span></div>
+                            <p class="text-xs text-slate-300">${up.desc}</p>
+                        </div>
+                    </div>
+                    <button onclick="buyUpgrade('${up.key}')" ${!canAfford ? 'disabled' : ''} class="street-btn shrink-0 px-3 py-2 rounded-xl font-black text-xs border-2 ${
+                        isMax
+                            ? 'bg-slate-700 text-slate-400 border-slate-600 cursor-not-allowed'
+                            : canAfford
+                                ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 border-emerald-200'
+                                : 'bg-slate-800 text-slate-400 border-slate-700 cursor-not-allowed'
+                    }">
+                        ${isMax ? 'ĐÃ TỐI ĐA' : formatVND(cost)}
+                    </button>
+                `;
+                listEl.appendChild(row);
+            });
+        }
+
+        function buyUpgrade(key) {
+            const def = UPGRADE_DEFINITIONS.find(u => u.key === key);
+            const currentLv = state.upgrades[key];
+            if (currentLv >= def.maxLevel) return;
+
+            const cost = def.baseCost * currentLv;
+            if (state.money < cost) {
+                playSadSound();
+                return;
+            }
+
+            state.money -= cost;
+            state.upgrades[key]++;
+            playCoinSound();
+            updatePerfectZoneUI();
+            renderUpgradeItems();
+            updateTopHUD();
+        }
+
+        /**************************************************************
+         * 12. KẾT THÚC CA ĐÊM & QUA ĐÊM MỚI
+         **************************************************************/
+        function endNightShift() {
+            state.isPaused = true;
+            playBambooClackSound();
+            document.getElementById('summaryDayNum').textContent = state.day;
+            document.getElementById('summaryBowlsSold').textContent = state.bowlsSoldThisShift + ' tô';
+            document.getElementById('summaryCustomersLost').textContent = state.customersLostThisShift + ' người';
+            document.getElementById('summaryTotalMoney').textContent = formatVND(state.money);
+
+            const modal = document.getElementById('shiftSummaryModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function openShopFromSummary() {
+            document.getElementById('shiftSummaryModal').classList.add('hidden');
+            document.getElementById('shiftSummaryModal').classList.remove('flex');
+            toggleUpgradeModal(true);
+        }
+
+        function startNextNightShift() {
+            document.getElementById('shiftSummaryModal').classList.add('hidden');
+            document.getElementById('shiftSummaryModal').classList.remove('flex');
+
+            state.day++;
+            state.shiftTimeElapsed = 0;
+            state.bowlsSoldThisShift = 0;
+            state.customersLostThisShift = 0;
+            state.customerSlots = [null, null, null];
+            state.isPaused = false;
+
+            resetBowl();
+            spawnCustomerInSlot(0);
+            spawnCustomerInSlot(1);
+            updateTopHUD();
+            showFloatingToast(`🌙 Bắt đầu Đêm Thứ ${state.day}!`, 'text-amber-300');
+        }
+
+        window.onload = initGame;
+    </script>
+</body>
+</html>
